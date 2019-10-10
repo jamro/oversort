@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  oversort-app:
+    image: oversort
+    ports:
+      - "3000:3000"
