@@ -4,4 +4,19 @@ services:
   oversort-app:
     image: oversort
     ports:
-      - "3000:3000"
+      - 3000:3000
+    deploy:
+     mode: replicated
+     replicas: 3
+     restart_policy:
+       max_attempts: 3
+       condition: on-failure
+     update_config:
+       parallelism: 1
+       delay: 10s
+    networks:
+     - web
+
+networks:
+  web:
+    driver: overlay

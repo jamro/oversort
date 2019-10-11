@@ -2,6 +2,8 @@ const express = require('express')
 const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
+const os = require('os');
+const nodeId = Math.floor(Math.random()*0xffffff).toString(16);
 
 function gennerateHtml(data) {
   data = data || '';
@@ -11,6 +13,10 @@ function gennerateHtml(data) {
       <hr />
       <input type="submit" value="Sort Data" />
     </form>
+    <!--
+      NodeID: ${nodeId}
+      Hostname: ${os.hostname()}
+    -->
   `;
 }
 
@@ -26,9 +32,10 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   let data = req.body.inputData;
   data = data.split("\n");
+  console.log(`NodeId: ${nodeId}, Sorting ${data.length} elements`);
   data = data.sort();
   data = data.join("\n");
   res.send(gennerateHtml(data))
 });
 
-app.listen(port, () => console.log(`OverSort app listening on port ${port}!`))
+app.listen(port, () => console.log(`OverSort app listening on port ${port}! (NodeId: ${nodeId})`))

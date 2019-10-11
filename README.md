@@ -12,14 +12,13 @@ To stop run `docker stack rm oversort`
 
 # How to build?
 ```
-cd app
-docker build -t oversort .
+docker build -t oversort ./app
 ```
 
 Open web browser and go to `http://localhost:3000`
-
 
 # TechStack:
 - NodeJS
 - ExpressJS
 - Docker
+- Docker Swarm
