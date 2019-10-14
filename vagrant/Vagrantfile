@@ -35,11 +35,11 @@ Vagrant.configure("2") do |config|
 
     if File.file?("./hosts")
       i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
-      i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true
+      i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true, name: "update /etc/hosts"
     end
 
-    i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{manager_ip}"
-    i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token"
+    i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{manager_ip}", name: "init docker swarm"
+    i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token", name: "get swarm token"
   end
 
   instances.each do |instance|
@@ -50,16 +50,15 @@ Vagrant.configure("2") do |config|
       i.vm.provision "shell", path: "./provision.sh"
       if File.file?("./hosts")
         i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
-        i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true
+        i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true, name: "update /etc/hosts"
       end
-      i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{manager_ip}:2377"
+      i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{manager_ip}:2377", name: "join docker swarm"
     end
   end
 
   config.vm.define "manager" do |i|
-    i.vm.provision "file", source: "../oversort-server", destination: "/tmp/oversort-server"
     i.vm.provision "file", source: "../oversort.yaml", destination: "/tmp/oversort.yaml"
-    i.vm.provision "shell", path: "./deploy.sh"
+    i.vm.provision "shell", inline: "docker stack deploy -c /tmp/oversort.yaml oversort", name: "deploy to docker swarm"
   end
 
 end

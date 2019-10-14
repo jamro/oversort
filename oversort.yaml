@@ -2,18 +2,18 @@ version: '3.1'
 
 services:
   oversort-server:
-    image: oversort-server
+    image: oversort/oversort-server
     ports:
       - 3000:3000
     deploy:
      mode: replicated
-     replicas: 3
+     replicas: 6
      restart_policy:
        max_attempts: 3
        condition: on-failure
      update_config:
-       parallelism: 1
-       delay: 10s
+       parallelism: 2
+       delay: 3s
     networks:
      - web
 
