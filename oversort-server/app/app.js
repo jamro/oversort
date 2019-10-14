@@ -13,10 +13,8 @@ function gennerateHtml(data) {
       <hr />
       <input type="submit" value="Sort Data" />
     </form>
-    <!--
-      NodeID: ${nodeId}
-      Hostname: ${os.hostname()}
-    -->
+    <hr />
+    <small>NodeID: ${nodeId}, Hostname: ${os.hostname()}</small>
   `;
 }
 
@@ -24,6 +22,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.set('etag', false);
 
 app.get('/', (req, res) => {
   res.send(gennerateHtml())
