@@ -56,9 +56,4 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "manager" do |i|
-    i.vm.provision "file", source: "../oversort.yaml", destination: "/tmp/oversort.yaml"
-    i.vm.provision "shell", inline: "docker stack deploy -c /tmp/oversort.yaml oversort", name: "deploy to docker swarm"
-  end
-
 end
