@@ -4,15 +4,8 @@ Let's see how much of over-engineering could be put into a simple app that just 
 # How to run?
 
 ```
-docker swarm init
-docker stack deploy -c oversort.yaml oversort
-```
-
-To stop run `docker stack rm oversort`
-
-# How to build?
-```
-docker build -t oversort ./app
+cd vagrant
+vagrant up
 ```
 
 Open web browser and go to `http://localhost:3000`
@@ -22,3 +15,4 @@ Open web browser and go to `http://localhost:3000`
 - ExpressJS
 - Docker
 - Docker Swarm
+- Vagrant

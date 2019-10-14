@@ -1,8 +1,8 @@
-version: '3.7'
+version: '3.1'
 
 services:
-  oversort-app:
-    image: oversort
+  oversort-server:
+    image: oversort-server
     ports:
       - 3000:3000
     deploy:
