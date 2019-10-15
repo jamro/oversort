@@ -1,13 +1,18 @@
 # OverSort
 Let's see how much of over-engineering could be put into a simple app that just sort some data :)
 
+# Prerequisites
+- Vagrant
+- VirtualBox
+- Python3
+
 # How to run?
 ```
-./init.sh
-./deploy.sh
+python3 init.py
+python3 deploy.py
 ```
 
-Open web browser and go to `http://192.168.10.2:3000`
+Open web browser and go to `http://192.168.10.2`
 
 # TechStack:
 - NodeJS
@@ -15,4 +20,5 @@ Open web browser and go to `http://192.168.10.2:3000`
 - Docker
 - Docker Swarm
 - Vagrant
+- VirtualBox
 - HAProx
