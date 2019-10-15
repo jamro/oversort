@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
 import os
+import docker
 
+imageTag = 'oversort/web-gateway'
+
+client = docker.from_env()
 currentDir = os.path.dirname(os.path.realpath(__file__));
 
-imageName = 'web-gateway'
-
-os.chdir(currentDir)
-os.system('docker build -t oversort/' + imageName + ' .')
-os.system('docker push oversort/' + imageName)
+print('Building docker image: ' + imageTag + '...')
+client.images.build(path=currentDir, tag=imageTag);
+print('Pushing docker image: ' + imageTag + '...')
+client.images.push(imageTag);
+print('DONE')
