@@ -15,3 +15,4 @@ Open web browser and go to `http://192.168.10.2:3000`
 - Docker
 - Docker Swarm
 - Vagrant
+- HAProxy
