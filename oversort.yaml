@@ -78,6 +78,47 @@ services:
     networks:
       - web
 
+  grafana:
+    image: oversort/grafana
+    depends_on:
+      - influxdb
+    ports:
+      - '3004:3000'
+    deploy:
+      mode: replicated
+      replicas: 1  # statefull !!!
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  influxdb:
+    image: oversort/influxdb
+    ports:
+      - '8086:8086'
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+      - INFLUXDB_USER=grafana
+      - INFLUXDB_USER_PASSWORD=grafana
+    deploy:
+      mode: replicated
+      replicas: 1  # statefull !!!
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
 networks:
   web:
     driver: overlay
