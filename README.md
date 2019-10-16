@@ -23,3 +23,4 @@ Open web browser and go to `http://192.168.10.2`
 - VirtualBox
 - HAProx
 - cAdvisor
+- Nginx

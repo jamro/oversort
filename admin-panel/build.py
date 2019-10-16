@@ -2,7 +2,7 @@
 import os
 import docker
 
-imageTag = 'oversort/oversort-server'
+imageTag = 'oversort/admin-panel'
 
 client = docker.from_env()
 currentDir = os.path.dirname(os.path.realpath(__file__));

@@ -14,7 +14,7 @@ function gennerateHtml(data) {
       <input type="submit" value="Sort Data" />
     </form>
     <hr />
-    <small>NodeID: ${nodeId}, Hostname: ${os.hostname()}</small>
+    <small>NodeID: ${nodeId} | <a href="/admin" target="_blank">Admin Panel</a></small>
   `;
 }
 

@@ -62,6 +62,22 @@ services:
     deploy:
       mode: global
 
+  admin-panel:
+    image: oversort/admin-panel
+    ports:
+      - '3003:80'
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
 networks:
   web:
     driver: overlay
