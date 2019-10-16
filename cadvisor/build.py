@@ -2,7 +2,7 @@
 import os
 import docker
 
-imageTag = 'oversort/web-gateway'
+imageTag = 'oversort/cadvisor'
 
 client = docker.from_env()
 currentDir = os.path.dirname(os.path.realpath(__file__));

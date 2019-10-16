@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 numworkers = 2
-vmmemory = 512
+vmmemory = 1024
 numcpu = 1
 
 instances = []
