@@ -4,7 +4,7 @@ datasources:
   - name: InfluxDB
     type: influxdb
     access: proxy
-    database: site
+    database: db0
     user: grafana
     password: grafana
     url: http://192.168.10.2:8086
