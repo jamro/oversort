@@ -1,0 +1,39 @@
+# my global config
+global:
+  scrape_interval:     120s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 120s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'oversort'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+#rule_files:
+  # - "alert.rules"
+  # - "first.rules"
+  # - "second.rules"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 120s
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+         - targets: ['192.168.10.2:3005', '192.168.10.2:3002', '192.168.10.2:9100']
+           labels:
+             group: 'manager'
+         - targets: ['192.168.10.3:3002', '192.168.10.3:9100']
+           labels:
+             group: 'worker1'
+         - targets: ['192.168.10.4:3002', '192.168.10.4:9100']
+           labels:
+             group: 'worker2'

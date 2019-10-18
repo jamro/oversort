@@ -7,7 +7,7 @@ services:
       - '80:80'
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
         max_attempts: 3
         condition: on-failure
@@ -23,12 +23,12 @@ services:
       - '3000:3000'
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
         max_attempts: 3
         condition: on-failure
       update_config:
-        parallelism: 2
+        parallelism: 1
         delay: 3s
     networks:
       - web
@@ -116,6 +116,31 @@ services:
       update_config:
         parallelism: 1
         delay: 3s
+    networks:
+      - web
+
+  prometheus:
+    image: oversort/prometheus
+    ports:
+      - '3005:9090'
+    deploy:
+      mode: replicated
+      replicas: 1 # statefull !!!
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  node-exporter:
+    image: oversort/node-exporter
+    ports:
+      - '9100:9100'
+    deploy:
+      mode: global
     networks:
       - web
 
