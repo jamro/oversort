@@ -29,3 +29,4 @@ Open web browser and go to `http://192.168.10.2`
 - Grafana
 - InfluxDB
 - Prometheus
+- Fluentd

@@ -5,6 +5,12 @@ services:
     image: oversort/web-gateway
     ports:
       - '80:80'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: replicated
       replicas: 2
@@ -21,6 +27,12 @@ services:
     image: oversort/oversort-server
     ports:
       - '3000:3000'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: replicated
       replicas: 2
@@ -37,6 +49,12 @@ services:
     image: oversort/swarm-viz
     ports:
       - '3001:8080'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     volumes:
       - type: bind
         source: /var/run/docker.sock
@@ -53,6 +71,12 @@ services:
         published: 3002
         protocol: tcp
         mode: host
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -66,6 +90,12 @@ services:
     image: oversort/admin-panel
     ports:
       - '3003:80'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: replicated
       replicas: 2
@@ -84,6 +114,12 @@ services:
       - influxdb
     ports:
       - '3004:3000'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: replicated
       replicas: 1  # statefull !!!
@@ -100,6 +136,12 @@ services:
     image: oversort/influxdb
     ports:
       - '8086:8086'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     environment:
       - INFLUXDB_DB=db0
       - INFLUXDB_ADMIN_ENABLED=true
@@ -123,6 +165,12 @@ services:
     image: oversort/prometheus
     ports:
       - '3005:9090'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: replicated
       replicas: 1 # statefull !!!
@@ -139,8 +187,33 @@ services:
     image: oversort/node-exporter
     ports:
       - '9100:9100'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
     deploy:
       mode: global
+    networks:
+      - web
+
+  fluentd:
+    image: oversort/fluentd
+    depends_on:
+      - elasticsearch
+    ports:
+      - '24224:24224'
+      - '24224:24224/udp'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
     networks:
       - web
 

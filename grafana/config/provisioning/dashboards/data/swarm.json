@@ -16,6 +16,7 @@
   "editable": true,
   "gnetId": 193,
   "graphTooltip": 1,
+  "iteration": 1571522384266,
   "links": [],
   "panels": [
     {
@@ -24,7 +25,7 @@
       "fontSize": "100%",
       "gridPos": {
         "h": 11,
-        "w": 16,
+        "w": 7,
         "x": 0,
         "y": 0
       },
@@ -60,7 +61,7 @@
       ],
       "targets": [
         {
-          "expr": "COUNT(container_last_seen{image!=\"\"}) by (container_label_com_docker_swarm_service_name)",
+          "expr": "sort(COUNT(container_last_seen{image!=\"\"}) by (container_label_com_docker_swarm_service_name))",
           "instant": true,
           "legendFormat": "{{container_label_com_docker_swarm_service_name}}",
           "refId": "A"
@@ -95,7 +96,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 16,
+        "x": 7,
         "y": 0
       },
       "height": "20",
@@ -184,7 +185,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 16,
+        "x": 7,
         "y": 3
       },
       "height": "20",
@@ -272,7 +273,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 16,
+        "x": 7,
         "y": 6
       },
       "height": "20",
@@ -338,6 +339,56 @@
       "valueName": "current"
     },
     {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "lcd",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 1073741824,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ],
+            "unit": "decbytes"
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.4.3",
+      "targets": [
+        {
+          "expr": "sort_desc(SUM(container_memory_usage_bytes{image!=\"\"}) by (container_label_com_docker_swarm_node_id))",
+          "instant": true,
+          "legendFormat": "Node ID: {{container_label_com_docker_swarm_node_id}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory Usage (Nodes)",
+      "type": "bargauge"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -350,10 +401,10 @@
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 12,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 17
       },
       "id": 2,
       "isNew": true,
@@ -414,11 +465,12 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "percent",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "100",
+          "min": "0",
           "show": true
         },
         {
@@ -448,12 +500,111 @@
       "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 26
       },
       "id": 1,
+      "isNew": true,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "SUM(container_memory_usage_bytes{image!=\"\"}) by (container_label_com_docker_swarm_service_name)",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{container_label_com_docker_swarm_service_name}}",
+          "metric": "container_memory_usage_bytes",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory Usage (services)",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 10,
       "isNew": true,
       "legend": {
         "alignAsTable": true,
@@ -496,7 +647,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Usage",
+      "title": "Memory Usage (containers)",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -549,7 +700,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 35
+        "y": 44
       },
       "id": 3,
       "isNew": true,
@@ -644,7 +795,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 35
+        "y": 44
       },
       "id": 4,
       "isNew": true,
@@ -731,7 +882,36 @@
     "docker"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "container_last_seen",
+        "hide": 2,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": "container_last_seen",
+        "refresh": 1,
+        "regex": "/.*group=\"([^\\\"]*)\".*/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-3h",
@@ -763,7 +943,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Docker Containers",
+  "title": "Containers Performance",
   "uid": "_S8fw1TZk",
   "version": 1
 }
