@@ -217,6 +217,28 @@ services:
     networks:
       - web
 
+  swagger:
+    image: oversort/swagger
+    ports:
+      - '3006:8080'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
 networks:
   web:
     driver: overlay

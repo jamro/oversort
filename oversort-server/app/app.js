@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const app = express();
 const port = 3000;
@@ -13,28 +14,7 @@ app.use(bodyParser.urlencoded({
 app.set('etag', false);
 
 app.get('/', (req, res) => {
-  let response = `
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script>
-    function submit() {
-      let data = $('#inputData').val();
-      data = data.split("\\n");
-      data = JSON.stringify(data);
-      $.get('./api/sorted?array=' + data, (response) => {
-        response = response.join("\\n");
-        $('#inputData').val(response);
-      })
-    }
-  </script>
-    <div>
-      <textarea id="inputData" rows="10" cols="50"></textarea>
-      <hr />
-      <input type="submit" value="Sort Data" onclick="submit()"/>
-    </div>
-    <hr />
-    <small>NodeID: ${nodeId} | <a href="/admin/" target="_blank">Admin Panel</a></small>
-  `;
-  res.send(response)
+  res.sendFile(path.resolve(__dirname, 'index.html'))
 });
 
 app.get('/api/sorted', (req, res) => {
