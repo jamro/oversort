@@ -23,8 +23,8 @@ services:
     networks:
       - web
 
-  app_server:
-    image: oversort/oversort-server
+  oversort_backend:
+    image: oversort/oversort-backend
     ports:
       - '3000:3000'
     logging:
@@ -230,6 +230,28 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  oversort_frontend:
+    image: oversort/oversort-frontend
+    ports:
+      - '3007:80'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
+    deploy:
+      mode: replicated
+      replicas: 2
       restart_policy:
         max_attempts: 3
         condition: on-failure

@@ -13,11 +13,7 @@ app.use(bodyParser.urlencoded({
 
 app.set('etag', false);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'index.html'))
-});
-
-app.get('/api/sorted', (req, res) => {
+app.get('/sorted', (req, res) => {
   let array = req.query.array
   if(!array) {
     res.status(400)

@@ -15,19 +15,19 @@ python3 deploy.py
 Open web browser and go to `http://192.168.10.2`
 
 # TechStack:
-- NodeJS
-- ExpressJS
+- Bootstrap
+- cAdvisor
 - Docker
 - Docker Swarm
+- ExpressJS
+- Fluentd
+- Grafana
+- HAProx
+- InfluxDB
+- JQuery
+- Nginx
+- NodeJS
+- Prometheus
+- Swagger
 - Vagrant
 - VirtualBox
-- HAProx
-- cAdvisor
-- Nginx
-- Bootstrap
-- JQuery
-- Grafana
-- InfluxDB
-- Prometheus
-- Fluentd
-- Swagger
