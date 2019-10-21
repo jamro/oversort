@@ -1,14 +1,6 @@
 import $ from 'jquery';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.js';
 
-$( document ).ready(function() {
-  console.log("App ready");
-  $('#submit').click(() => {
-    let data = $('#inputData').val();
-    data = data.split("\n");
-    data = JSON.stringify(data);
-    $.get('./api/sorted?array=' + data, (response) => {
-      response = response.join("\n");
-      $('#inputData').val(response);
-    })
-  })
-});
+ReactDOM.render(<App />, document.getElementById('root'));

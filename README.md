@@ -28,6 +28,7 @@ Open web browser and go to `http://192.168.10.2`
 - Nginx
 - NodeJS
 - Prometheus
+- ReactJS
 - Swagger
 - Vagrant
 - VirtualBox
