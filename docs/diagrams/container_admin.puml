@@ -1,0 +1,35 @@
+@startuml
+
+title Container Diagram (admin)
+
+actor Admin
+node gateway
+node infrastructure
+
+package "admin" {
+  [admin-panel]
+  [cadvisor]
+  [fluentd]
+  [grafana]
+  [influxdb]
+  [node-exporter]
+  [prometheus]
+  [swagger]
+  [swarm-viz]
+}
+
+Admin --> [gateway]
+[gateway] --> [admin-panel]
+[admin-panel] --> [swarm-viz]
+[admin-panel] --> [cadvisor]
+[admin-panel] --> [prometheus]
+[admin-panel] --> [grafana]
+[admin-panel] --> [swagger]
+[fluentd] -up-> [influxdb]
+[influxdb] -up-> [grafana]
+[node-exporter] -up-> [prometheus]
+infrastructure -up-> [fluentd]
+infrastructure -up-> [cadvisor]
+infrastructure -up-> [swarm-viz]
+infrastructure -up-> [node-exporter]
+@enduml

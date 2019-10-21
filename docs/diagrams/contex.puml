@@ -1,0 +1,22 @@
+@startuml
+
+title System Context Diagram
+
+actor User
+actor Admin
+node app
+node admin
+node infrastructure
+node gateway
+
+
+User -right-> gateway : use
+Admin -left-> gateway : manage
+gateway --> app : use
+gateway --> admin : manage
+admin -left-> app : monitor
+
+infrastructure -up-> app
+infrastructure -up-> admin
+
+@enduml

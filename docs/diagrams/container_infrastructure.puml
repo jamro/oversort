@@ -1,0 +1,19 @@
+@startuml
+
+title Container Diagram (infrastructure)
+
+node app
+node admin
+
+package "infrastructure" {
+  [docker-container] <-- [virtual-machiine]
+}
+
+
+app <-- [docker-container]
+admin <-- [docker-container]
+
+
+[Vagrant] -left-> [virtual-machiine]
+
+@enduml

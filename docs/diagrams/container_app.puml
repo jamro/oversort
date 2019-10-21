@@ -1,0 +1,17 @@
+@startuml
+
+title Container Diagram (app)
+
+actor User
+node gateway
+
+package "oversort-app" {
+  [oversort-frontend]
+  [oversort-backend]
+  [oversort-frontend] --> [oversort-backend]
+}
+
+User --> [gateway]
+[gateway] --> [oversort-frontend]
+
+@enduml
