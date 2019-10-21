@@ -31,3 +31,4 @@ Open web browser and go to `http://192.168.10.2`
 - Swagger
 - Vagrant
 - VirtualBox
+- Webpack

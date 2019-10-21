@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{tjUo:function(n,t,a){"use strict";a.r(t);var i=a("lTfz"),o=a.n(i);o()(document).ready((function(){console.log("App ready"),o()("#submit").click(()=>{let n=o()("#inputData").val();n=n.split("\n"),n=JSON.stringify(n),o.a.get("./api/sorted?array="+n,n=>{n=n.join("\n"),o()("#inputData").val(n)})})}))}},[["tjUo",1,2]]]);
