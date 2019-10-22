@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import Footer from './components/Footer.js'
+import Header from './components/Header.js'
+import SortWidget from './components/SortWidget.js'
 
 class App extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
-      sortInput: ''
+      sorted: []
     };
   }
 
-  onSubmit(event) {
-    let data = this.state.sortInput;
+  onSubmit(data) {
     data = data.split("\n");
     data = JSON.stringify(data);
     $.get('./api/sorted?array=' + data, (response) => {
-      response = response.join("\n");
-      this.setState({sortInput: response});
+      this.setState({sorted: response});
     })
   }
 
@@ -26,13 +27,12 @@ class App extends Component{
 
    render() {
       return <div>
-         <div>
-           <textarea rows="10" cols="50" value={this.state.sortInput} onChange={(event) => this.handleInputChange(event)} />
-           <hr />
-           <button onClick={() => this.onSubmit()}>Sort Data</button>
-         </div>
-         <hr />
-         <small><a href="/admin/" target="_blank">Admin Panel</a></small>
+        <Header />
+        <SortWidget
+          sorted={this.state.sorted}
+          onSort={(value) => this.onSubmit(value)}
+        />
+        <Footer />
        </div>
    }
 

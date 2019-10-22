@@ -22,7 +22,7 @@ if os.path.isfile(projectBuildPath):
         sys.exit(2);
 
 client = docker.from_env()
-print('Building docker image: ' + containerName + '...!')
+print('Building docker image: ' + containerName + '...')
 client.images.build(path=buildFolder, tag=containerName);
 
 print('Pushing docker image: ' + containerName + '...')
