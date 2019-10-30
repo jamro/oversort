@@ -52,7 +52,7 @@ so that it is easy to search for a specific item
 
 # How to run?
 
-Bofore you start, make sure that you haev installed:
+Before you start, make sure that you have installed:
 - Vagrant
 - VirtualBox
 - Python3
