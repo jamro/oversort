@@ -8,7 +8,10 @@ node gateway
 package "oversort-app" {
   [oversort-frontend]
   [oversort-backend]
+  [mongo]
   [oversort-frontend] --> [oversort-backend]
+  [oversort-backend] --> [mongo]
+
 }
 
 User --> [gateway]

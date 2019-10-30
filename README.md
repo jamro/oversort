@@ -24,6 +24,7 @@ so that it is easy to search for a specific item
 - InfluxDB
 - JQuery
 - Material Design
+- MongoDB
 - Nginx
 - NodeJS
 - Prometheus

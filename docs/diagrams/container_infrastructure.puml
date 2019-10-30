@@ -1,4 +1,4 @@
-@startuml
+[docker-container]@startuml
 
 title Container Diagram (infrastructure)
 
@@ -6,14 +6,14 @@ node app
 node admin
 
 package "infrastructure" {
-  [docker-container] <-- [virtual-machiine]
+  [docker-swarm] <-- [virtual-machine]
 }
 
 
-app <-- [docker-container]
-admin <-- [docker-container]
+app <-- [docker-swarm]
+admin <-- [docker-swarm]
 
 
-[Vagrant] -left-> [virtual-machiine]
+[Vagrant] -left-> [virtual-machine]
 
 @enduml

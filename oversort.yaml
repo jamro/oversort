@@ -27,6 +27,8 @@ services:
     image: oversort/oversort-backend
     ports:
       - '3000:3000'
+    environment:
+      - OVERSORT_MONGO_HOST=192.168.10.2
     logging:
       driver: fluentd
       options:
@@ -252,6 +254,50 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  mongo:
+    image: oversort/mongo
+    ports:
+      - 27017:27017
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  mongo-express:
+    image: oversort/mongo-express
+    ports:
+      - 3008:8081
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.2:24224"
+    deploy:
+      mode: replicated
+      replicas: 1
       restart_policy:
         max_attempts: 3
         condition: on-failure

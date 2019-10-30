@@ -1,3 +1,12 @@
 {
-  "sorted": ["alpha", "beta", "gamma", "zetta"]
+  "sorted": {
+    "sortId": "bf04ec3e-1db2-4a43-9f6a-ce01ccf293dd",
+    "input": ["gamma", "beta", "zetta", "alpha"],
+    "output": ["alpha", "beta", "gamma", "zetta"]
+  },
+  "history": {
+    "sortId": "b000000e-1db2-4a43-9f6a-ce01ccf293dd",
+    "input": ["zebra", "dog", "cat", "bird"],
+    "output": ["bird", "cat", "dog", "zebra"]
+  }
 }

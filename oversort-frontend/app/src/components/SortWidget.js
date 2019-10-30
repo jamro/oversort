@@ -8,14 +8,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
+import Divider from '@material-ui/core/Divider';
+import PermaLink from './PermaLink.js';
 
 class SortWidget extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
-      sortInput: ''
+      sortInput: ""
     };
   }
 
@@ -27,39 +28,43 @@ class SortWidget extends Component{
     this.setState({sortInput: event.target.value});
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.sorted != this.props.sorted) {
+      this.setState({
+        sortInput:this.props.sorted.join("\n")
+      })
+    }
+  }
+
   render() {
     let sorted = this.props.sorted.map(el => <ListItem><ListItemText primary={el}/></ListItem>)
+    let permaLink = null;
+    if(this.props.sortId) {
+      permaLink = <div>
+          <Divider variant="middle" />
+          <PermaLink sortId={this.props.sortId} />
+        </div>
+    }
+
     return <div>
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <div>
-              <TextField
-                label="What would you like to sort?"
-                multiline
-                margin="normal"
-                variant="outlined"
-                value={this.state.sortInput}
-                onChange={(event) => this.handleInputChange(event)}
-                style={{width: '100%'}}
-              />
-            </div>
-            <div style={{marginBottom: '1em'}}>
-              <Button variant="contained" color="primary" onClick={() => this.onSubmit()}>
-                Sort Me
-              </Button>
-            </div>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper style={{margin: '1em 0', padding: '1em'}}>
-              <Typography variant="h5" component="h3">
-                Result of sorting
-              </Typography>
-              <List>
-                {sorted.length ? sorted :  <ListSubheader>Nothing</ListSubheader>}
-              </List>
-            </Paper>
-          </Grid>
-        </Grid>
+        <div>
+          <TextField
+            label="What would you like to sort?"
+            multiline
+            margin="normal"
+            variant="outlined"
+            defaultValue=""
+            value={this.state.sortInput}
+            onChange={(event) => this.handleInputChange(event)}
+            style={{width: '100%'}}
+          />
+        </div>
+        <div style={{marginBottom: '1em'}}>
+          <Button variant="contained" color="primary" onClick={() => this.onSubmit()}>
+            Sort Me
+          </Button>
+        </div>
+        {permaLink}
       </div>
    }
 

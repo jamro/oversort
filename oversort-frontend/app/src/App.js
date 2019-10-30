@@ -9,29 +9,51 @@ class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      sorted: []
+      sorted: [],
+      sortId: undefined,
+      loading: false
     };
+  }
+
+  componentDidMount() {
+    if(this.props.sortId) {
+      this.setState({
+        loading: true
+      });
+      $.get('./api/history?sortId=' + this.props.sortId, (response) => {
+        this.setState({
+          sorted: response.output,
+          sortId: response.sortId,
+          loading: false
+        });
+      })
+    }
   }
 
   onSubmit(data) {
     data = data.split("\n");
     data = JSON.stringify(data);
     $.get('./api/sorted?array=' + data, (response) => {
-      this.setState({sorted: response});
+      this.setState({
+        sorted: response.output,
+        sortId: response.sortId
+      });
     })
   }
 
-  handleInputChange(event)  {
-    this.setState({sortInput: event.target.value});
-  }
+  render() {
+    let content = "Loading...";
+    if(!this.props.loading) {
+      content = <SortWidget
+        sorted={this.state.sorted}
+        sortId={this.state.sortId}
+        onSort={(value) => this.onSubmit(value)}
+      />;
+    }
 
-   render() {
-      return <div>
+    return <div>
         <Header />
-        <SortWidget
-          sorted={this.state.sorted}
-          onSort={(value) => this.onSubmit(value)}
-        />
+        {content}
         <Footer />
        </div>
    }

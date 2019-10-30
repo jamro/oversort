@@ -3,4 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App.js';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+let sortId = window.location.href.replace(/^.*#(.*)$/, "$1");
+if(sortId == window.location.href) {
+  sortId = undefined;
+}
+
+ReactDOM.render(<App sortId={sortId} />, document.getElementById('root'));
