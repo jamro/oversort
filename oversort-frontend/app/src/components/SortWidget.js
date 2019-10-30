@@ -10,6 +10,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';
 import PermaLink from './PermaLink.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 class SortWidget extends Component{
 
@@ -61,7 +63,7 @@ class SortWidget extends Component{
         </div>
         <div style={{marginBottom: '1em'}}>
           <Button variant="contained" color="primary" onClick={() => this.onSubmit()}>
-            Sort Me
+            Sort Me <FontAwesomeIcon icon={faArrowRight} style={{marginLeft: '1em'}}/>
           </Button>
         </div>
         {permaLink}

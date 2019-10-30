@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSortAmountUp } from '@fortawesome/free-solid-svg-icons'
 
 class Header extends Component{
 
@@ -9,7 +11,7 @@ class Header extends Component{
       return <AppBar position="static">
         <Toolbar variant="dense">
           <Typography variant="h6">
-            OverSort
+            <FontAwesomeIcon icon={faSortAmountUp} /> OverSort
           </Typography>
         </Toolbar>
       </AppBar>
