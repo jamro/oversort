@@ -4,16 +4,32 @@ title Container Diagram (infrastructure)
 
 node app
 node admin
+node logging
+node gateway
 
 package "infrastructure" {
-  [docker-swarm] <-- [virtual-machine]
+  [infra-swarm-cluster]
+  [app-swarm-cluster]
+  [vm-infra]
+  [vm-manager]
+  [vm-worker1]
+  [vm-worker2]
 }
 
+app <-- [app-swarm-cluster]
+admin <-- [app-swarm-cluster]
 
-app <-- [docker-swarm]
-admin <-- [docker-swarm]
+logging <-- [infra-swarm-cluster]
+gateway <-- [infra-swarm-cluster]
 
+[vm-infra] -up-> [infra-swarm-cluster]
+[vm-manager] -up-> [app-swarm-cluster]
+[vm-worker1] -up-> [app-swarm-cluster]
+[vm-worker2] -up-> [app-swarm-cluster]
 
-[Vagrant] -left-> [virtual-machine]
+[Vagrant] -up-> [vm-infra]
+[Vagrant] -up-> [vm-manager]
+[Vagrant] -up-> [vm-worker1]
+[Vagrant] -up-> [vm-worker2]
 
 @enduml

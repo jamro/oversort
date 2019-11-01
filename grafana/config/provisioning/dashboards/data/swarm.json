@@ -16,62 +16,103 @@
   "editable": true,
   "gnetId": 193,
   "graphTooltip": 1,
-  "iteration": 1571985257982,
+  "iteration": 1572628361696,
   "links": [],
   "panels": [
     {
-      "columns": [],
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "Prometheus",
-      "fontSize": "100%",
+      "decimals": 0,
+      "fill": 10,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 11,
-        "w": 7,
+        "h": 10,
+        "w": 15,
         "x": 0,
         "y": 0
       },
       "id": 9,
-      "options": {},
-      "pageSize": null,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
       },
-      "styles": [
-        {
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "hidden"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 0,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
+      "lines": true,
+      "linewidth": 0,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": true,
       "targets": [
         {
-          "expr": "sort(COUNT(container_last_seen{image!=\"\"}) by (container_label_com_docker_swarm_service_name))",
-          "instant": true,
+          "expr": "COUNT(container_last_seen{image!=\"\"}) by (container_label_com_docker_swarm_service_name)",
+          "instant": false,
+          "intervalFactor": 1,
           "legendFormat": "{{container_label_com_docker_swarm_service_name}}",
           "refId": "A"
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "List of services",
-      "transform": "timeseries_to_rows",
-      "type": "table"
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "cacheTimeout": null,
@@ -96,7 +137,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 7,
+        "x": 15,
         "y": 0
       },
       "height": "20",
@@ -134,7 +175,9 @@
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
-        "show": false
+        "show": true,
+        "ymax": null,
+        "ymin": null
       },
       "tableColumn": "",
       "targets": [
@@ -185,7 +228,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 7,
+        "x": 15,
         "y": 3
       },
       "height": "20",
@@ -273,7 +316,7 @@
       "gridPos": {
         "h": 3,
         "w": 8,
-        "x": 7,
+        "x": 15,
         "y": 6
       },
       "height": "20",
@@ -344,7 +387,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 12,
       "options": {
@@ -355,7 +398,7 @@
           ],
           "defaults": {
             "mappings": [],
-            "max": 1073741824,
+            "max": 805306368,
             "min": 0,
             "thresholds": [
               {
@@ -377,9 +420,9 @@
       "pluginVersion": "6.4.3",
       "targets": [
         {
-          "expr": "sort_desc(SUM(container_memory_usage_bytes{image!=\"\"}) by (container_label_com_docker_swarm_node_id))",
+          "expr": "sort_desc(SUM(container_memory_usage_bytes{image!=\"\"}) by (group))",
           "instant": true,
-          "legendFormat": "Node ID: {{container_label_com_docker_swarm_node_id}}",
+          "legendFormat": "{{group}}",
           "refId": "A"
         }
       ],
@@ -404,7 +447,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 16
       },
       "id": 2,
       "isNew": true,
@@ -503,7 +546,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 25
       },
       "id": 1,
       "isNew": true,
@@ -602,7 +645,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 35
       },
       "id": 10,
       "isNew": true,
@@ -700,7 +743,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 44
+        "y": 43
       },
       "id": 3,
       "isNew": true,
@@ -795,7 +838,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 44
+        "y": 43
       },
       "id": 4,
       "isNew": true,
@@ -913,7 +956,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {

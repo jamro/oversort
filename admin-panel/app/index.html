@@ -20,24 +20,31 @@
 
       <div >
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="openApp('http://192.168.10.2:3001')">Swarm Viz</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="swarmVizDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Swarm Viz
+            </a>
+            <div class="dropdown-menu" aria-labelledby="swarmVizDropdown">
+              <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.100:3001')">Infra Cluster</a>
+              <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.2:3001')">App Cluster</a>
+            </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="cadvisorDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               cAdvisor
             </a>
             <div class="dropdown-menu" aria-labelledby="cadvisorDropdown">
+              <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.100:3002')">Infra</a>
               <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.2:3002')">Manager</a>
               <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.3:3002')">Worker 1</a>
               <a class="dropdown-item" href="#" onclick="openApp('http://192.168.10.4:3002')">Worker 2</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" onclick="openApp('http://192.168.10.2:3005')">Prometheus</a>
+            <a class="nav-link" href="#" onclick="openApp('http://192.168.10.100:3005')">Prometheus</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" onclick="openApp('http://192.168.10.2:3004')">Grafana</a>
+            <a class="nav-link" href="#" onclick="openApp('http://192.168.10.100:3004')">Grafana</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="openApp('http://192.168.10.2:3008')">MongoDB</a>

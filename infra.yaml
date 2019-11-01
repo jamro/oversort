@@ -1,0 +1,147 @@
+version: '3.2'
+
+services:
+  web_gateway:
+    image: oversort/web-gateway
+    ports:
+      - '80:80'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  influxdb:
+    image: oversort/influxdb
+    ports:
+      - '8086:8086'
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+      - INFLUXDB_USER=grafana
+      - INFLUXDB_USER_PASSWORD=grafana
+    deploy:
+      mode: replicated
+      replicas: 1  # statefull !!!
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  fluentd:
+    image: oversort/fluentd
+    depends_on:
+      - influxdb
+    ports:
+      - '24224:24224'
+      - '24224:24224/udp'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  swarm_viz:
+    image: oversort/swarm-viz
+    ports:
+      - '3001:8080'
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    deploy:
+      placement:
+        constraints:
+          - 'node.role == manager'
+
+  cadvisor:
+    image: oversort/cadvisor
+    ports:
+      - target: 8080
+        published: 3002
+        protocol: tcp
+        mode: host
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.100:24224"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    deploy:
+      mode: global
+
+
+  node-exporter:
+    image: oversort/node-exporter
+    ports:
+      - '9100:9100'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.100:24224"
+    deploy:
+      mode: global
+    networks:
+      - web
+
+  prometheus:
+    image: oversort/prometheus
+    ports:
+      - '3005:9090'
+    deploy:
+      mode: replicated
+      replicas: 1 # statefull !!!
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  grafana:
+    image: oversort/grafana
+    ports:
+      - '3004:3000'
+    deploy:
+      mode: replicated
+      replicas: 1  # statefull !!!
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+networks:
+  web:
+    driver: overlay

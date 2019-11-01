@@ -15,12 +15,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1571522770638,
+  "iteration": 1572611192812,
   "links": [],
   "panels": [
     {
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "datasource": "InfluxDB",
@@ -42,7 +42,7 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 2,
       "nullPointMode": "connected",
       "options": {
@@ -54,14 +54,14 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "10s"
               ],
               "type": "time"
             },
@@ -177,7 +177,7 @@
       "type": "logs"
     }
   ],
-  "refresh": false,
+  "refresh": "1s",
   "schemaVersion": 20,
   "style": "dark",
   "tags": [
@@ -188,15 +188,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "docker.oversort_admin-panel.2.tfotncei19g2uswzu75csh50h",
-          "value": "docker.oversort_admin-panel.2.tfotncei19g2uswzu75csh50h"
+          "tags": [],
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "InfluxDB",
         "definition": "SHOW MEASUREMENTS",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": null,
-        "multi": false,
+        "multi": true,
         "name": "container",
         "options": [],
         "query": "SHOW MEASUREMENTS",
@@ -213,8 +216,8 @@
     ]
   },
   "time": {
-    "from": "2019-10-19T12:58:55.298Z",
-    "to": "2019-10-20T00:58:55.298Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [

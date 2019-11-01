@@ -7,6 +7,6 @@ datasources:
     database: db0
     user: grafana
     password: grafana
-    url: http://192.168.10.2:8086
+    url: http://192.168.10.100:8086
     jsonData:
       httpMode: GET

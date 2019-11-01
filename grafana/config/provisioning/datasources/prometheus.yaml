@@ -4,4 +4,4 @@ datasources:
 - name: Prometheus
   type: prometheus
   access: proxy
-  url: http://192.168.10.2:3005
+  url: http://192.168.10.100:3005

@@ -57,10 +57,26 @@ Before you start, make sure that you have installed:
 - VirtualBox
 - Python3
 
-Run following scripts in project directory
+Create virtual machines where over sort is going to be deployed:
 ```
-python3 init.py    # depoly cluster
-python3 deploy.py  # depoly oversort services
+python3 init.py   
+```
+Now, VirtualBox should run 4 VMs:
+- vagrant_infra
+- vagrant_manager
+- vagrant_worker1
+- vagrant_worker2
+
+Deploy infrastructure services to the first VM:
+```
+python3 deploy_infra.py   
 ```
 
-Open web browser and go to `http://192.168.10.2`
+Go to http://192.168.10.100:3001/ and wait for all containers to be are up and running. The page may be available after a while when it's container is launched
+
+Now, deploy oversort services to swarm cluster span across last 3 VMs:
+
+```
+python3 deploy_app.py
+```
+Open web browser and go to http://192.168.10.100. It may take a while when all services got up and running

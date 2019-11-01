@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 numworkers = 2
-vmmemory = 1024
+vmmemory = 768
 numcpu = 1
 
 instances = []
@@ -11,12 +11,15 @@ instances = []
   instances.push({:name => "worker#{n}", :ip => "192.168.10.#{n+2}"})
 end
 
+infra_ip = "192.168.10.100"
 manager_ip = "192.168.10.2"
 
 File.open("./hosts", 'w') { |file|
   instances.each do |i|
     file.write("#{i[:ip]} #{i[:name]} #{i[:name]}\n")
   end
+  file.write("#{infra_ip} infra infra")
+  file.write("#{manager_ip} manager manager")
 }
 
 Vagrant.require_version ">= 1.8.4"
@@ -24,7 +27,22 @@ Vagrant.require_version ">= 1.8.4"
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
    	v.memory = vmmemory
-	v.cpus = numcpu
+	  v.cpus = numcpu
+  end
+
+  config.vm.define "infra" do |i|
+    i.vm.box = "ubuntu/trusty64"
+    i.vm.hostname = "infra"
+    i.vm.network "private_network", ip: "#{infra_ip}"
+    i.vm.provision "shell", path: "./provision.sh"
+
+    if File.file?("./hosts")
+      i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
+      i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true, name: "update /etc/hosts"
+    end
+
+    i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{infra_ip}", name: "init docker swarm"
+    i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token", name: "get swarm token"
   end
 
   config.vm.define "manager" do |i|
