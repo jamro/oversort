@@ -8,18 +8,18 @@ numcpu = 1
 instances = []
 
 (1..numworkers).each do |n|
-  instances.push({:name => "worker#{n}", :ip => "192.168.10.#{n+2}"})
+  instances.push({:name => "app#{n+1}", :ip => "192.168.10.#{n+2}"})
 end
 
 infra_ip = "192.168.10.100"
-manager_ip = "192.168.10.2"
+app_ip = "192.168.10.2"
 
 File.open("./hosts", 'w') { |file|
   instances.each do |i|
     file.write("#{i[:ip]} #{i[:name]} #{i[:name]}\n")
   end
-  file.write("#{infra_ip} infra infra")
-  file.write("#{manager_ip} manager manager")
+  file.write("#{infra_ip} infra1 infra1")
+  file.write("#{app_ip} app1 app1")
 }
 
 Vagrant.require_version ">= 1.8.4"
@@ -30,9 +30,9 @@ Vagrant.configure("2") do |config|
 	  v.cpus = numcpu
   end
 
-  config.vm.define "infra" do |i|
+  config.vm.define "infra1" do |i|
     i.vm.box = "ubuntu/trusty64"
-    i.vm.hostname = "infra"
+    i.vm.hostname = "infra1"
     i.vm.network "private_network", ip: "#{infra_ip}"
     i.vm.provision "shell", path: "./provision.sh"
 
@@ -45,10 +45,10 @@ Vagrant.configure("2") do |config|
     i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token", name: "get swarm token"
   end
 
-  config.vm.define "manager" do |i|
+  config.vm.define "app1" do |i|
     i.vm.box = "ubuntu/trusty64"
-    i.vm.hostname = "manager"
-    i.vm.network "private_network", ip: "#{manager_ip}"
+    i.vm.hostname = "app1"
+    i.vm.network "private_network", ip: "#{app_ip}"
     i.vm.provision "shell", path: "./provision.sh"
 
     if File.file?("./hosts")
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
       i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true, name: "update /etc/hosts"
     end
 
-    i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{manager_ip}", name: "init docker swarm"
+    i.vm.provision "shell", inline: "docker swarm init --advertise-addr #{app_ip}", name: "init docker swarm"
     i.vm.provision "shell", inline: "docker swarm join-token -q worker > /vagrant/token", name: "get swarm token"
   end
 
@@ -70,7 +70,7 @@ Vagrant.configure("2") do |config|
         i.vm.provision "file", source: "hosts", destination: "/tmp/hosts"
         i.vm.provision "shell", inline: "cat /tmp/hosts >> /etc/hosts", privileged: true, name: "update /etc/hosts"
       end
-      i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{manager_ip}:2377", name: "join docker swarm"
+      i.vm.provision "shell", inline: "docker swarm join --advertise-addr #{instance[:ip]} --listen-addr #{instance[:ip]}:2377 --token `cat /vagrant/token` #{app_ip}:2377", name: "join docker swarm"
     end
   end
 

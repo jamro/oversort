@@ -1,0 +1,4 @@
+Click==7.0
+docker==4.1.0
+python-vagrant==0.5.15
+PyYAML==5.1.2

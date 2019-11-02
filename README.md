@@ -57,26 +57,32 @@ Before you start, make sure that you have installed:
 - VirtualBox
 - Python3
 
+Install Python dependencies:
+
+```
+pip3 install -r py_requirements.txt
+```
+
 Create virtual machines where over sort is going to be deployed:
 ```
-python3 init.py   
+./init.py
 ```
 Now, VirtualBox should run 4 VMs:
-- vagrant_infra
-- vagrant_manager
-- vagrant_worker1
-- vagrant_worker2
+- vagrant_infra1
+- vagrant_app1
+- vagrant_app2
+- vagrant_app3
 
 Deploy infrastructure services to the first VM:
 ```
-python3 deploy_infra.py   
+./deploy.py --cluster infra
 ```
 
 Go to http://192.168.10.100:3001/ and wait for all containers to be are up and running. The page may be available after a while when it's container is launched
 
-Now, deploy oversort services to swarm cluster span across last 3 VMs:
+Now, deploy OverSort services to swarm cluster span across last 3 VMs:
 
 ```
-python3 deploy_app.py
+./deploy.py --cluster app
 ```
 Open web browser and go to http://192.168.10.100. It may take a while when all services got up and running
