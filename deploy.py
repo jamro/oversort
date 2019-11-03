@@ -9,7 +9,7 @@ import time
 
 @click.command()
 @click.option("--cluster", "-c", default="none", help="Name of cluster ('app' or 'infra')")
-@click.option("--pull", "-p", default=True, help="whether pull images before deployment")
+@click.option("--pull", "-p", default=True, help="whether pull images before deployment (True or False)")
 
 def run(cluster, pull):
     """Deploy services to Docker Swarm cluster"""
@@ -17,7 +17,7 @@ def run(cluster, pull):
     # configuration
     if cluster == 'app':
         vm_name = "app1"
-        yaml_name = 'oversort.yaml'
+        yaml_name = 'app.yaml'
         vms = ["app1", "app2", "app3"]
     elif cluster == 'infra':
         vm_name = "infra1"
@@ -30,7 +30,7 @@ def run(cluster, pull):
     currentDir = os.path.dirname(os.path.realpath(__file__));
     rootDir = os.chdir(os.path.join(currentDir, 'vagrant'))
     v = vagrant.Vagrant(root=rootDir, quiet_stdout=False)
-    yamlPath = os.path.join(currentDir, yaml_name)
+    yamlPath = os.path.join(currentDir, 'cluster', yaml_name)
 
     # pull images before deployment (startup cluster faster)
     if pull == True:
@@ -72,6 +72,7 @@ def run(cluster, pull):
 
     # wait for Fluentd to start (required for app claster to log)
     if cluster == 'infra':
+        print ("Waiting for Fluentd to start...")
         while True:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             result = sock.connect_ex(('192.168.10.100',24224))
@@ -79,8 +80,8 @@ def run(cluster, pull):
                print ("Fluentd ready")
                break
             else:
-               print ("Waiting for Fluentd to start...")
                time.sleep(5)
+               print ("Waiting for Fluentd to start...")
             sock.close()
 
     print('DONE')
