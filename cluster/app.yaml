@@ -66,28 +66,6 @@ services:
     deploy:
       mode: global
 
-  admin-panel:
-    image: oversort/admin-panel
-    ports:
-      - '3003:80'
-    logging:
-      driver: fluentd
-      options:
-        fluentd-async-connect: 'true'
-        tag: "docker.{{.Name}}"
-        fluentd-address: "192.168.10.100:24224"
-    deploy:
-      mode: replicated
-      replicas: 2
-      restart_policy:
-        max_attempts: 10
-        condition: on-failure
-      update_config:
-        parallelism: 1
-        delay: 3s
-    networks:
-      - web
-
   node-exporter:
     image: oversort/node-exporter
     ports:
