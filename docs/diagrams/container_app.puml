@@ -10,12 +10,14 @@ package "oversort-app" {
   [oversort-backend]
   [oversort-store]
   [mongo]
+  [redis]
   [rabbitmq]
   [oversort-frontend] --> [oversort-backend]
   [oversort-backend] -right-> [rabbitmq]
   [oversort-backend] --> [oversort-store]
   [rabbitmq] <-- [oversort-store]
   [oversort-store] --> [mongo]
+  [oversort-store] -right-> [redis]
 
 }
 

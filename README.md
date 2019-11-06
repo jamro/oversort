@@ -18,17 +18,20 @@ so that it is easy to search for a specific item
 ## Frontend
 - [Bootstrap](https://getbootstrap.com/)
 - [Font Awesome](https://fontawesome.com/)
+- [HAProxy](http://www.haproxy.org/)
 - [JQuery](https://jquery.com/)
 - [Material Design](https://material.io/)
+- [Nginx](https://www.nginx.com/)
 - [ReactJS](https://reactjs.org/)
 
 ## App Server
 - [ExpressJS](https://expressjs.com/)
 - [NodeJS](https://nodejs.org)
 
-## Database
+## Database & Cache
 - [InfluxDB](https://www.influxdata.com/)
 - [MongoDB](https://www.mongodb.com/)
+- [Redis](https://redis.io/)
 
 ## Infrastructure
 - [Docker/Swarm](https://www.docker.com/)
@@ -46,10 +49,8 @@ so that it is easy to search for a specific item
 - [Webpack](https://webpack.js.org/)
 
 ## Others
-- [HAProxy](http://www.haproxy.org/)
-- [Nginx](https://www.nginx.com/)
-- [Swagger](https://swagger.io/)
 - [RabbitMQ](https://www.rabbitmq.com/)
+- [Swagger](https://swagger.io/)
 
 # How to run?
 

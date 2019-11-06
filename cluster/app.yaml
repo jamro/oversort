@@ -209,6 +209,7 @@ services:
     environment:
       - OVERSORT_MONGO_HOST=192.168.10.2
       - OVERSORT_RABBIT_HOST=192.168.10.2
+      - OVERSORT_REDIS_HOST=192.168.10.2
     depends_on:
       - rabbitmq
       - mongo
@@ -221,6 +222,28 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  redis:
+    image: oversort/redis
+    ports:
+      - '6379:6379'
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.100:24224"
+    deploy:
+      mode: replicated
+      replicas: 1
       restart_policy:
         max_attempts: 10
         condition: on-failure
