@@ -2,57 +2,21 @@
   "openapi" : "3.0.0",
   "servers" : [ {
     "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/jamro/oversort/1.0.0"
+    "url" : "https://virtserver.swaggerhub.com/jamro/oversort-store/1.0.0"
   } ],
   "info" : {
-    "description" : "Oversort REST API",
-    "version" : "1.1.0",
-    "title" : "Oversort API"
+    "description" : "REST API of OverSort Store",
+    "version" : "1.0.0",
+    "title" : "OverSort Store API"
   },
   "paths" : {
-    "/sorted" : {
-      "get" : {
-        "summary" : "sort the list",
-        "operationId" : "sorted",
-        "description" : "Sort alphabetically  provided list \n",
-        "parameters" : [ {
-          "in" : "query",
-          "name" : "array",
-          "description" : "List of items to be sorted formatted as JSON string",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "sorted array",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/SortList"
-                },
-                "example" : {
-                  "sortId" : "bf04ec3e-1db2-4a43-9f6a-ce01ccf293dd",
-                  "input" : [ "omega", "alpha", "beta" ],
-                  "output" : [ "alpha", "beta", "omega" ]
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "bad input parameter"
-          }
-        }
-      }
-    },
-    "/history" : {
+    "/sorted/{sortId}" : {
       "get" : {
         "summary" : "Get past sorting results",
         "operationId" : "history",
         "description" : "Each sort operation is stored and can be retrived later. This call returns past sort result basing on its sortId\n",
         "parameters" : [ {
-          "in" : "query",
+          "in" : "path",
           "name" : "sortId",
           "description" : "reference ID of sort operation",
           "required" : true,

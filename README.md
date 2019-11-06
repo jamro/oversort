@@ -49,6 +49,7 @@ so that it is easy to search for a specific item
 - [HAProxy](http://www.haproxy.org/)
 - [Nginx](https://www.nginx.com/)
 - [Swagger](https://swagger.io/)
+- [RabbitMQ](https://www.rabbitmq.com/)
 
 # How to run?
 

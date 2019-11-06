@@ -8,9 +8,14 @@ node gateway
 package "oversort-app" {
   [oversort-frontend]
   [oversort-backend]
+  [oversort-store]
   [mongo]
+  [rabbitmq]
   [oversort-frontend] --> [oversort-backend]
-  [oversort-backend] --> [mongo]
+  [oversort-backend] -right-> [rabbitmq]
+  [oversort-backend] --> [oversort-store]
+  [rabbitmq] <-- [oversort-store]
+  [oversort-store] --> [mongo]
 
 }
 

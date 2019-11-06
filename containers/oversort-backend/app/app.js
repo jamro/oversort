@@ -1,29 +1,31 @@
 const path = require('path')
-const express = require('express')
-const mongodb = require('mongodb');
+const express = require('express');
 const bodyParser = require('body-parser');
 const os = require('os');
 const uuid = require('uuid/v4');
 
+const Sorter = require('./lib/Sorter.js')
+const SortPublisher = require('./lib/SortPublisher.js')
+const StoreAPI = require('./lib/StoreAPI.js')
+
 const app = express();
 const nodeId = Math.floor(Math.random()*0xffffff).toString(16);
-const MongoClient = mongodb.MongoClient;
 
 var config = {
-  mongo: {
+  rabbitmq: {
     host: 'localhost'
+  },
+  store: {
+    host: 'localhost',
+    port: 3000
   },
   port: 3000
 }
 
-config.mongo.host = process.env.OVERSORT_MONGO_HOST ? process.env.OVERSORT_MONGO_HOST : config.mongo.host;
+config.rabbitmq.host = process.env.OVERSORT_RABBIT_HOST ? process.env.OVERSORT_RABBIT_HOST : config.rabbitmq.host;
+config.store.host = process.env.OVERSORT_STORE_HOST ? process.env.OVERSORT_STORE_HOST : config.store.host;
+config.store.port = process.env.OVERSORT_STORE_PORT ? process.env.OVERSORT_STORE_PORT : config.store.port;
 config.port = process.env.OVERSORT_PORT ? process.env.OVERSORT_PORT : config.port;
-
-const mongoUrl = `mongodb://${config.mongo.host}`
-const mongoOpts = {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -32,17 +34,19 @@ app.use(bodyParser.urlencoded({
 
 app.set('etag', false);
 
-app.get('/sorted', (req, res) => {
+app.post('/sorted', (req, res) => {
   let sortId = uuid();
-  let array = req.query.array
+  let array = req.body.array
   if(!array) {
     res.status(400)
     res.send("400 Bad Request: array parameter is required")
     return
   }
+  console.log("Parsing JSON data...");
   try {
     array = JSON.parse(array)
   } catch(err) {
+    console.error("Unable convert to JSON from: '" + array + "'");
     console.error(err);
     res.status(400)
     res.send("400 Bad Request: Invalid JSON format")
@@ -51,7 +55,11 @@ app.get('/sorted', (req, res) => {
   console.log(`Sorting array with ${array.length} element(s)...`);
   let outputArray = JSON.parse(JSON.stringify(array));
 
-  outputArray = outputArray.sort();
+  let sorter = new Sorter()
+  outputArray = sorter.sort(outputArray);
+
+  let publisher = new SortPublisher(config.rabbitmq.host);
+  publisher.publish(sortId, array, outputArray)
 
   let response = {
     sortId,
@@ -59,68 +67,30 @@ app.get('/sorted', (req, res) => {
     output: outputArray
   }
 
-  console.log(`Connecting to MongoDB at ${mongoUrl}`);
-  MongoClient.connect(mongoUrl, mongoOpts, (err, client) => {
-    if(err) {
-      return console.error(err);
-    }
-    let db = client.db('oversort');
-
-    console.log("Inserting to database...");
-    db.collection('SortList').insertOne(response)
-    client.close();
-    console.log('MongoDB connection closed');
-  })
-
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(response))
 });
 
 
-app.get('/history', (req, res) => {
-  let sortId = req.query.sortId
+app.get('/history/:sortId', async (req, res) => {
+  let sortId = req.params.sortId
   if(!sortId) {
     res.status(400)
     res.send("400 Bad Request: sortId parameter is required")
     return
   }
 
-  console.log(`Getting sort history for ${sortId}...`);
-
-  console.log(`Connecting to MongoDB at ${mongoUrl}`);
-  MongoClient.connect(mongoUrl, mongoOpts, (err, client) => {
-    if(err) {
-      res.status(500)
-      res.send("500 Internal error")
-      return console.error(err);
-    }
-    let db = client.db('oversort');
-
-    console.log("Searching database...");
-    db.collection('SortList').findOne({sortId}, (err, result) => {
-      if(err) {
-        res.status(500)
-        res.send("500 Internal error")
-        return console.error(err);
-      }
-      if(!result) {
-        res.status(404)
-        res.send("404 Not Found")
-        return console.error(err);
-      }
-
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({
-        sortId,
-        input: result.input,
-        output: result.output,
-      }))
-
-      client.close();
-      console.log('MongoDB connection closed');
-    })
-  })
+  let api = new StoreAPI(`http://${config.store.host}:${config.store.port}`);
+  try {
+    let result = await api.getSortResult(sortId)
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(result))
+  } catch (err) {
+    console.log("Error: " + err.message);
+    res.status(500)
+    res.send("500 Internal Error")
+  }
 
 });
 
-app.listen(config.port, () => console.log(`OverSort app listening on port ${config.port}! (NodeId: ${nodeId})`))
+app.listen(config.port, () => console.log(`OverSort Backend listening on port ${config.port}! (NodeId: ${nodeId})`))

@@ -6,7 +6,11 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - OVERSORT_MONGO_HOST=192.168.10.2
+      - OVERSORT_STORE_HOST=192.168.10.2
+      - OVERSORT_STORE_PORT=3010
+      - OVERSORT_RABBIT_HOST=192.168.10.2
+    depends_on:
+      - rabbitmq
     logging:
       driver: fluentd
       options:
@@ -85,6 +89,8 @@ services:
     image: oversort/swagger
     ports:
       - '3006:8080'
+    environment:
+      - URLS=[{name:"OverSort Backend", url:"./oversort/jamro-oversort-backend-1.2.0-swagger.json"}, {name:"OverSort Store", url:"./oversort/jamro-oversort-store-1.0.0-swagger.json"}]
     logging:
       driver: fluentd
       options:
@@ -164,6 +170,57 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  rabbitmq:
+    image: oversort/rabbitmq
+    ports:
+      - 5672:5672
+      - 3009:15672
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.100:24224"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        max_attempts: 10
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 3s
+    networks:
+      - web
+
+  oversort_store:
+    image: oversort/oversort-store
+    ports:
+      - '3010:3000'
+    environment:
+      - OVERSORT_MONGO_HOST=192.168.10.2
+      - OVERSORT_RABBIT_HOST=192.168.10.2
+    depends_on:
+      - rabbitmq
+      - mongo
+    logging:
+      driver: fluentd
+      options:
+        fluentd-async-connect: 'true'
+        tag: "docker.{{.Name}}"
+        fluentd-address: "192.168.10.100:24224"
+    deploy:
+      mode: replicated
+      replicas: 2
       restart_policy:
         max_attempts: 10
         condition: on-failure

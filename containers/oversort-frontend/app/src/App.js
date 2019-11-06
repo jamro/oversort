@@ -20,7 +20,7 @@ class App extends Component{
       this.setState({
         loading: true
       });
-      $.get('./api/history?sortId=' + this.props.sortId, (response) => {
+      $.get('./api/history/' + this.props.sortId, (response) => {
         this.setState({
           sorted: response.output,
           sortId: response.sortId,
@@ -33,12 +33,20 @@ class App extends Component{
   onSubmit(data) {
     data = data.split("\n");
     data = JSON.stringify(data);
-    $.get('./api/sorted?array=' + data, (response) => {
-      this.setState({
-        sorted: response.output,
-        sortId: response.sortId
-      });
-    })
+    $.ajax(
+      {
+        type: "POST",
+        url: './api/sorted',
+        data: {array: data},
+        success: (response) => {
+          this.setState({
+            sorted: response.output,
+            sortId: response.sortId
+          });
+        },
+        dataType: 'json'
+      }
+    )
   }
 
   render() {

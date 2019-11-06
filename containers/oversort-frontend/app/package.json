@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "json-server json-server/api.json --static ./dist --routes json-server/routes.json",
+    "start": "node server_mock.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js --mode production"
   },
@@ -20,7 +20,6 @@
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.4.1",
-    "json-server": "^0.15.1",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"
@@ -30,6 +29,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "@material-ui/core": "^4.5.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   }
