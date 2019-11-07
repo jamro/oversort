@@ -54,7 +54,7 @@ Just a "few" technologies that seems to be "a must have" to solve sorting proble
 - [Swagger](https://swagger.io/)
 
 # Architecure
-Read [architecure](docs/architecure.md) section to see how those component are put together.
+Read [architecture](docs/architecture.md) section to see how those component are put together.
 
 # How to run?
 
