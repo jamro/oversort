@@ -1,0 +1,23 @@
+@startuml
+
+title Container Diagram (admin)
+
+actor Admin
+node gateway
+node infrastructure
+
+
+package "admin" {
+  [admin-panel]
+  [fluentd]
+  [grafana]
+  [influxdb]
+}
+
+Admin --> [gateway]
+[gateway] --> [admin-panel]
+[admin-panel] -right-> [grafana]
+[fluentd] -left-> [influxdb]
+[influxdb] -left-> [grafana]
+infrastructure -up-> [fluentd]
+@enduml

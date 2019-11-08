@@ -4,32 +4,34 @@ title Container Diagram (infrastructure)
 
 node app
 node admin
-node logging
 node gateway
 
 package "infrastructure" {
   [infra-swarm-cluster]
   [app-swarm-cluster]
-  [vm-infra]
-  [vm-manager]
-  [vm-worker1]
-  [vm-worker2]
+  [vm-infra1]
+  [vm-app1]
+  [vm-app2]
+  [vm-app3]
 }
 
 app <-- [app-swarm-cluster]
-admin <-- [app-swarm-cluster]
 
-logging <-- [infra-swarm-cluster]
+admin <-- [infra-swarm-cluster]
 gateway <-- [infra-swarm-cluster]
 
-[vm-infra] -up-> [infra-swarm-cluster]
-[vm-manager] -up-> [app-swarm-cluster]
-[vm-worker1] -up-> [app-swarm-cluster]
-[vm-worker2] -up-> [app-swarm-cluster]
+gateway .left.> app
+gateway .right.> admin
+[infra-swarm-cluster] <.right. [app-swarm-cluster]
 
-[Vagrant] -up-> [vm-infra]
-[Vagrant] -up-> [vm-manager]
-[Vagrant] -up-> [vm-worker1]
-[Vagrant] -up-> [vm-worker2]
+[vm-infra1] -up-> [infra-swarm-cluster]
+[vm-app1] -up-> [app-swarm-cluster]
+[vm-app2] -up-> [app-swarm-cluster]
+[vm-app3] -up-> [app-swarm-cluster]
+
+[Vagrant] -up-> [vm-infra1]
+[Vagrant] -up-> [vm-app1]
+[Vagrant] -up-> [vm-app2]
+[Vagrant] -up-> [vm-app3]
 
 @enduml

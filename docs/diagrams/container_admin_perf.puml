@@ -10,38 +10,21 @@ node infrastructure
 package "admin" {
   [admin-panel]
   [cadvisor]
-  [fluentd]
   [grafana]
   [influxdb]
   [node-exporter]
   [prometheus]
-  [swarm-viz]
-  [mongo-express]
-  [rabbitmq]
 }
-package "app" {
-  [mongo]
-  [swagger]
-}
-
 
 Admin --> [gateway]
 [gateway] --> [admin-panel]
-[admin-panel] --> [swarm-viz]
 [admin-panel] --> [cadvisor]
 [admin-panel] --> [prometheus]
-[cadvisor] -up-> [prometheus]
+[prometheus] <-down- [cadvisor]
 [prometheus] --> [influxdb]
 [admin-panel] --> [grafana]
-[admin-panel] --> [rabbitmq]
-[admin-panel] --> [swagger]
-[admin-panel] --> [mongo-express]
-[fluentd] -up-> [influxdb]
 [influxdb] -up-> [grafana]
-[mongo] -up-> [mongo-express]
 [node-exporter] -up-> [prometheus]
-infrastructure -up-> [fluentd]
 infrastructure -up-> [cadvisor]
-infrastructure -up-> [swarm-viz]
 infrastructure -up-> [node-exporter]
 @enduml
