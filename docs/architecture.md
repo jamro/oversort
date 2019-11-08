@@ -1,7 +1,5 @@
 # Architecture
 
-# Architecture
-
 ## System's Architecture Overview
 
 There are two parts of the system:
@@ -12,7 +10,7 @@ All user interfaces of both: **app** and **admin** are available through the **w
 
 ![system overview](./diagrams/context.png)
 
-## Sorting Microservices Design
+## Application Design
 
 The main application is split into several components. The frontend UI and the API are available through **web gateway** at http://192.168.10.100
 
