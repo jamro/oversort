@@ -25,6 +25,10 @@ mongo              | database where all sorting operations are stored
 redis              | cache used to optimize queries to oversort-store
 rabbitmq           | message queue that transport sort operation
 
+### Communication Flow
+
+![app flow](./diagrams/app_flow.png)
+
 ## Administration and Monitoring
 
 A set of services is provided to manage the main application and the infrastructure where it runs. All UI's of administration services are available through **web gateway** at http://192.168.10.100/admin. Usually, each of those services provides separate UI. All of them are integrated by **admin-panel** component that provides proper routing and linking by embedding UI of other administration services.
