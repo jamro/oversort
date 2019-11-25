@@ -1,0 +1,39 @@
+@startuml
+
+  actor User
+
+
+  User -> web_browser : open
+  activate web_browser
+  web_browser -> web_gateway: GET /
+  activate web_gateway
+  web_gateway -> oversort_frontend : GET /index.html
+  activate oversort_frontend
+  oversort_frontend --> web_gateway
+  deactivate oversort_frontend
+  web_gateway --> web_browser
+  deactivate web_gateway
+  web_browser --> User
+
+  ...
+
+  User -> web_browser : openPermaLink
+  web_browser -> web_browser : readSortId()
+  web_browser -> web_gateway : GET /api/history/{sortId}
+  activate web_gateway
+  web_gateway -> oversort_backend : GET /history/{sortId}
+  activate oversort_backend
+  oversort_backend -> oversort_store : GET /sorted/{sortId}
+  activate oversort_store
+  oversort_store -> redis : get(sortList)
+  oversort_store -> mongo : read(sortList)
+  oversort_store --> oversort_backend : sortList
+  deactivate oversort_store
+  oversort_backend --> web_gateway : sortList
+  deactivate oversort_backend
+  web_gateway --> web_browser : sortList
+  deactivate web_gateway
+  web_browser --> User
+  deactivate web_browser
+
+@enduml

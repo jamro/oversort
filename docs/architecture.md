@@ -27,7 +27,9 @@ rabbitmq           | message queue that transport sort operation
 
 ### Communication Flow
 
-![app flow](./diagrams/app_flow.png)
+![app flow 1](./diagrams/app_flow_sort.png)
+
+![app flow 2](./diagrams/app_flow_history.png)
 
 ## Administration and Monitoring
 

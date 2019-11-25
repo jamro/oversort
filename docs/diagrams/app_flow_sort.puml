@@ -1,0 +1,43 @@
+@startuml
+
+  actor User
+
+
+  User -> web_browser : open
+  activate web_browser
+  web_browser -> web_gateway: GET /
+  activate web_gateway
+  web_gateway -> oversort_frontend : GET /index.html
+  activate oversort_frontend
+  oversort_frontend --> web_gateway
+  deactivate oversort_frontend
+  web_gateway --> web_browser
+  deactivate web_gateway
+  web_browser --> User
+
+  ...
+
+  User -> web_browser : inputSortData
+	User -> web_browser : submitSortInput
+  web_browser -> web_gateway : POST /api/sorted
+  activate web_gateway
+  web_gateway -> oversort_backend: POST /sorted
+  activate oversort_backend
+  oversort_backend -> oversort_backend : sort()
+  oversort_backend -> rabbitmq : publish(sortList)
+  activate rabbitmq
+  oversort_backend --> web_gateway : sortList
+  deactivate oversort_backend
+  web_gateway --> web_browser : sortList
+  deactivate web_gateway
+  web_browser --> User
+  oversort_store -> rabbitmq : subscribe(sortList)
+  deactivate rabbitmq
+  activate oversort_store
+  oversort_store -> mongo : save(sortList)
+  oversort_store -> redis : set(sortList)
+  deactivate oversort_store
+
+  deactivate web_gateway
+
+@enduml
