@@ -9,9 +9,10 @@ I want to sort my list,
 so that it is easy to search for a specific item
 ```
 ## Why?
+Why overcomplicating such a simple task?
 - because I can :)
 - because it is fun :)
-- to encourage thinking about how much of engineering our projects really needs. All of us have seen that before. Teams chaise for the latest technologies and want to use them all at once. We want our app to be ready for extreme conditions that will probably never happen, aiming from the very beginning for full scalability, top performance, highest security,  very easy extensibility and so on. We try to cover all possible and impossible corner cases making the app much more complicated than it really should be. We want to have zero technical debt. All those goals are not wrong, but they always have their costs. Think twice before taking design/technical decisions and do not use  a sledgehammer to crack a nut
+- to encourage thinking about how much of engineering our projects really need. All of us have seen that before. Teams chaise for the latest technologies to use them all at once. We want our app to be ready for extreme conditions that will probably never happen, aiming from the very beginning for full scalability, top performance, highest security, easy extensibility and so on. We try to cover all possible and impossible corner cases making the app much more complicated than it actually should be. All those goals are not wrong, but they always have their costs. Think twice before taking design/technical decisions and do not use a sledgehammer to crack a nut.
 
 # TechStack
 Just a "few" technologies that seems to be "a must have" to solve sorting problem ;-)
